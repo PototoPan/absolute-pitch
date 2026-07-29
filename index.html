@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Absolute Pitch</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -12,9 +13,26 @@
     <button id="playBtn">Play Note</button>
     <button id="repeatBtn">Repeat Note</button>
 
+    <!-- 
     <div id="answerArea">
         <input type="text" id="answerInput" placeholder="Note name (e.g. C, F#)">
         <button id="submitBtn">Submit</button>
+    </div> 
+    -->
+
+    <div id="keyboard">
+        <div class="key white" data-note="C"></div>
+        <div class="key black" data-note="C#"></div>
+        <div class="key white" data-note="D"></div>
+        <div class="key black" data-note="D#"></div>
+        <div class="key white" data-note="E"></div>
+        <div class="key white" data-note="F"></div>
+        <div class="key black" data-note="F#"></div>
+        <div class="key white" data-note="G"></div>
+        <div class="key black" data-note="G#"></div>
+        <div class="key white" data-note="A"></div>
+        <div class="key black" data-note="A#"></div>
+        <div class="key white" data-note="B"></div>
     </div>
 
     <p id="feedback"></p>

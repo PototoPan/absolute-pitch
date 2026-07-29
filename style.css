@@ -1,0 +1,32 @@
+/* keyboard formatting */
+
+#keyboard {
+    position: relative;
+    display: flex;
+    width: 350px;
+    height: 150px;
+}
+
+.white {
+    position: relative;
+    flex: 1;
+    border: 1px solid black;
+    background: white;
+    z-index: 1;
+}
+
+.black {
+    position: absolute;
+    width: 20px;
+    height: 90px;
+    background: black;
+    z-index: 2;
+    top: 0;
+}
+
+/* Black key positions — nudged left to sit between the white keys */
+.key[data-note="C#"] { left: 40px; }
+.key[data-note="D#"] { left: 90px; }
+.key[data-note="F#"] { left: 190px; }
+.key[data-note="G#"] { left: 240px; }
+.key[data-note="A#"] { left: 290px; }

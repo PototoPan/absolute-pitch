@@ -1,4 +1,4 @@
-console.log("script loaded");
+console.log("Script loaded");
 
 // 12 notes in an octave
 const NOTES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
@@ -26,13 +26,14 @@ function playNote(note){
 
     oscillator.start();
     oscillator.stop(audioCtx.currentTime + 1); //play for one second
-    console.log("Played note:" + currentNote); //CONSOLE 
+    console.log("Played note: " + currentNote); //CONSOLE 
 }
 
 function playRandomNote() {
     // pick a random note from the array
     const randomIndex = Math.floor(Math.random() * NOTES.length); 
     currentNote = NOTES[randomIndex];
+    console.log("Currentnote: " + currentNote); //CONSOLE 
     //play said note 
     playNote(currentNote);
 }
@@ -46,21 +47,11 @@ function repeatNote() {
     playNote(currentNote);
 }
 
-function checkAnswer(){
-    const input = document.getElementById("answerInput");
-    const feedback = document.getElementById("feedback");
-
-    // normalise input: trim spaces, uppercase whatever
-    const userAnswer = input.value.trim().toUpperCase();
-
+function checkAnswer(userAnswer){
     if (currentNote === null) {
+        const feedback = document.getElementById("feedback");
         feedback.textContent = "Play a note first";
         return; 
-    }
-
-    if (userAnswer === null){
-        feedback.textContent = "Please enter a note before submitting";
-        return;
     }
 
     if (userAnswer === currentNote) {
@@ -68,15 +59,13 @@ function checkAnswer(){
     } else {
         feedback.textContent = `Incorrect, it was ${currentNote}`;
     }
-
-    input.value = ""; //clear for next round 
 }
-
-
-
-
-
 
 document.getElementById("playBtn").addEventListener("click", playRandomNote);
 document.getElementById("repeatBtn").addEventListener("click", repeatNote);
-document.getElementById("submitBtn").addEventListener("click", checkAnswer);
+
+document.querySelectorAll(".key").forEach(key => {
+    key.addEventListener("click", () => {
+        checkAnswer(key.dataset.note);
+    })
+})

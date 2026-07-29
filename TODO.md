@@ -5,11 +5,15 @@
 - [x] basic html structure
 - [x] play random note
 - [x] submit + check answer
+- [x] repeat note button
+- [x] visual layout for submission
 
 ## next
 
-- [ ] repeat note button
-- [ ] visual layout for submission
+- [ ] hotkeys
+- [ ] actual sounds instead of this sine garbage
+- [ ] responsive answers: colour, highlight key, fade
+- [ ] responsive answers: sound
 
 ## future ideas
 
@@ -18,3 +22,4 @@
 - [ ] key toggle list
 - [ ] chord training
 - [ ] octave selector
+- [ ] accuracy per key
