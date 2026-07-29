@@ -12,12 +12,8 @@ const NOTE_FREQUENCIES = {
 
 let currentNote = null; //store answer for current round 
 
-function playRandomNote() {
-    // pick a random note from the array
-    const randomIndex = Math.floor(Math.random() * NOTES.length); 
-    currentNote = NOTES[randomIndex];
-
-    //set up web audio 
+function playNote(note){
+        //set up web audio 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const oscillator = audioCtx.createOscillator(); 
     const gainNode = audioCtx.createGain();
@@ -31,7 +27,23 @@ function playRandomNote() {
     oscillator.start();
     oscillator.stop(audioCtx.currentTime + 1); //play for one second
     console.log("Played note:" + currentNote); //CONSOLE 
+}
 
+function playRandomNote() {
+    // pick a random note from the array
+    const randomIndex = Math.floor(Math.random() * NOTES.length); 
+    currentNote = NOTES[randomIndex];
+    //play said note 
+    playNote(currentNote);
+}
+
+function repeatNote() {
+    console.log("repeat button clicked");
+    if (currentNote === null){
+        document.getElementById("feedback").textContent = "Play a note first";
+        return;
+    }
+    playNote(currentNote);
 }
 
 function checkAnswer(){
@@ -44,6 +56,11 @@ function checkAnswer(){
     if (currentNote === null) {
         feedback.textContent = "Play a note first";
         return; 
+    }
+
+    if (userAnswer === null){
+        feedback.textContent = "Please enter a note before submitting";
+        return;
     }
 
     if (userAnswer === currentNote) {
@@ -61,4 +78,5 @@ function checkAnswer(){
 
 
 document.getElementById("playBtn").addEventListener("click", playRandomNote);
+document.getElementById("repeatBtn").addEventListener("click", repeatNote);
 document.getElementById("submitBtn").addEventListener("click", checkAnswer);
