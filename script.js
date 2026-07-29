@@ -47,17 +47,31 @@ function repeatNote() {
     playNote(currentNote);
 }
 
-function checkAnswer(userAnswer){
+function checkAnswer(clickedKey){
+    const feedback = document.getElementById("feedback");
+    const userAnswer = clickedKey.dataset.note;
+
     if (currentNote === null) {
-        const feedback = document.getElementById("feedback");
         feedback.textContent = "Play a note first";
         return; 
     }
 
+
+    // find the key element that matches the correct note
+    const correctKey = document.querySelector(`.key[data-note="${currentNote}"]`);
+
+    //remove leftover colours from previous round
+    document.querySelectorAll(".key").forEach(key => {
+        key.classList.remove("correct", "incorrect");
+    });
+
     if (userAnswer === currentNote) {
         feedback.textContent = "Correct!";
+        correctKey.classList.add("correct");
     } else {
         feedback.textContent = `Incorrect, it was ${currentNote}`;
+        clickedKey.classList.add("incorrect");
+        correctKey.classList.add("correct");
     }
 }
 
@@ -66,6 +80,6 @@ document.getElementById("repeatBtn").addEventListener("click", repeatNote);
 
 document.querySelectorAll(".key").forEach(key => {
     key.addEventListener("click", () => {
-        checkAnswer(key.dataset.note);
+        checkAnswer(key);
     })
 })

@@ -30,3 +30,13 @@
 .key[data-note="F#"] { left: 190px; }
 .key[data-note="G#"] { left: 240px; }
 .key[data-note="A#"] { left: 290px; }
+
+
+/* correct incorrect colours */
+.correct{
+    background-color: limegreen;
+}
+
+.incorrect{
+    background-color: crimson;
+}
