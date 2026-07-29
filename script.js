@@ -12,6 +12,8 @@ const NOTE_FREQUENCIES = {
 
 let currentNote = null; //store answer for current round 
 
+let fadeTimer = null; //track fade out timer so it can be cancelled
+
 function playNote(note){
         //set up web audio 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -61,8 +63,12 @@ function checkAnswer(clickedKey){
     const correctKey = document.querySelector(`.key[data-note="${currentNote}"]`);
 
     //remove leftover colours from previous round
+    if (fadeTimer !== null){
+        clearTimeout(fadeTimer);
+    }
+
     document.querySelectorAll(".key").forEach(key => {
-        key.classList.remove("correct", "incorrect");
+        key.classList.remove("correct", "incorrect", "fading-out");
     });
 
     if (userAnswer === currentNote) {
@@ -73,6 +79,14 @@ function checkAnswer(clickedKey){
         clickedKey.classList.add("incorrect");
         correctKey.classList.add("correct");
     }
+
+    fadeTimer = setTimeout(() => {
+        document.querySelectorAll(".key").forEach(key => {
+            key.classList.add("fading-out");
+            key.classList.remove("correct", "incorrect");
+        });
+        fadeTimer = null;
+    }, 1000);
 }
 
 document.getElementById("playBtn").addEventListener("click", playRandomNote);

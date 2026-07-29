@@ -33,6 +33,14 @@
 
 
 /* correct incorrect colours */
+.key {
+    transition: background-color 0.1s ease-in;
+}
+
+.key.fading-out {
+    transition: background-color 2s ease-out;
+}
+
 .correct{
     background-color: limegreen;
 }
