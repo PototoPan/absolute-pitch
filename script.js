@@ -1,5 +1,4 @@
 console.log("Script loaded");
-
 // 12 notes in an octave
 const NOTES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 
@@ -14,20 +13,63 @@ let currentNote = null; //store answer for current round
 
 let fadeTimer = null; //track fade out timer so it can be cancelled
 
+const settings = {
+    feedbackMode: 'correctness'
+};
+
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+function playFeedbackSound(isCorrect) {
+    const now = audioContext.currentTime;
+    const osc = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+
+    let stopTime;
+
+    if(isCorrect) {
+        osc.type= 'sine';
+        osc.frequency.setValueAtTime(880, now);
+        osc.frequency.setValueAtTime(1320, now + 0.08);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+        stopTime = now + 0.25;
+    } else {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(180, now);
+        osc.frequency.exponentialRampToValueAtTime(90, now + 0.2);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+        stopTime = now + 0.2;
+    }
+
+    osc.connect(gain);
+    gain.connect(audioContext.destination);
+    osc.start(now);
+    osc.stop(stopTime);
+}
+
+function playFeedback (isCorrect, correctNote){
+    if(settings.feedbackMode==='correctness'){
+        playFeedbackSound(isCorrect);
+    } else if (settings.feedbackMode === 'notePlayed') {
+        playToneFeedback(correctNote);
+    }
+}
+
+
 function playNote(note){
         //set up web audio 
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioCtx.createOscillator(); 
-    const gainNode = audioCtx.createGain();
+    const oscillator = audioContext.createOscillator(); 
+    const gainNode = audioContext.createGain();
 
     oscillator.frequency.value = NOTE_FREQUENCIES[currentNote];
     oscillator.type = "sine"; //plain note, no harmonics
 
     oscillator.connect(gainNode); 
-    gainNode.connect(audioCtx.destination);
+    gainNode.connect(audioContext.destination);
 
     oscillator.start();
-    oscillator.stop(audioCtx.currentTime + 1); //play for one second
+    oscillator.stop(audioContext.currentTime + 1); //play for one second
     console.log("Played note: " + currentNote); //CONSOLE 
 }
 
@@ -78,7 +120,8 @@ function checkAnswer(clickedKey){
         feedback.textContent = `Incorrect, it was ${currentNote}`;
         clickedKey.classList.add("incorrect");
         correctKey.classList.add("correct");
-    }
+    } 
+    playFeedback(userAnswer === currentNote, currentNote);
 
     fadeTimer = setTimeout(() => {
         document.querySelectorAll(".key").forEach(key => {
