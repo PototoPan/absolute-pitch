@@ -8,12 +8,12 @@
 - [x] repeat note button
 - [x] visual layout for submission
 - [x] responsive answers: colour, highlight key, fade
+- [x] responsive answers: sound
 
 ## next
 
 - [ ] hotkeys
 - [ ] actual sounds instead of this sine  
-- [ ] responsive answers: sound
 - [ ] score tracking: per key, total accuracy
 
 ## future ideas
