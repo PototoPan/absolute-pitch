@@ -13,13 +13,6 @@
     <button id="playBtn">Play Note</button>
     <button id="repeatBtn">Repeat Note</button>
 
-    <!-- 
-    <div id="answerArea">
-        <input type="text" id="answerInput" placeholder="Note name (e.g. C, F#)">
-        <button id="submitBtn">Submit</button>
-    </div> 
-    -->
-
     <div id="keyboard">
         <div class="key white" data-note="C"></div>
         <div class="key black" data-note="C#"></div>
@@ -37,6 +30,16 @@
 
     <p id="feedback"></p>
 
+    <div id ="settings">
+    <p>Settings</p>
+        <div id="feedbackAudio">
+            <input type="radio" id="isCorrectRadio" name="feedbackAudio" value="isCorrect" checked>
+            <label for="isCorrectRadio">isCorrect</label><br>
+            
+            <input type="radio" id="correctNoteRadio" name="feedbackAudio" value="correctNote">
+            <label for="correctNoteRadio">Note played</label><br>
+        </div>
+    </div>
     <script src="script.js"></script>
 
 

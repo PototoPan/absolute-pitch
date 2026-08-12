@@ -13,8 +13,10 @@
 ## next
 
 - [ ] hotkeys
+- [ ] meta viewport?
 - [ ] actual sounds instead of this sine  
 - [ ] score tracking: per key, total accuracy
+- [ ] response, played note change length 
 
 ## future ideas
 

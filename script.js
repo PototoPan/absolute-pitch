@@ -18,6 +18,13 @@ const settings = {
 };
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const VOLUME_LEVELS = [0, 0.02, 0.05, 0.1, 0.17, 0.27, 0.4, 0.58, 0.78, 1];
+
+const masterGain = audioContext.createGain();
+masterGain.gain.value = VOLUME_LEVELS[5]; 
+masterGain.connect(audioContext.destination);
+
+
 
 function playFeedbackSound(isCorrect) {
     const now = audioContext.currentTime;
@@ -43,34 +50,42 @@ function playFeedbackSound(isCorrect) {
     }
 
     osc.connect(gain);
-    gain.connect(audioContext.destination);
+    gain.connect(masterGain);
     osc.start(now);
     osc.stop(stopTime);
 }
 
-function playFeedback (isCorrect, correctNote){
-    if(settings.feedbackMode==='correctness'){
+function playFeedback(isCorrect, correctNote, submittedNote) {
+    if (settings.feedbackMode === 'correctness') {
         playFeedbackSound(isCorrect);
     } else if (settings.feedbackMode === 'notePlayed') {
-        playToneFeedback(correctNote);
+        playNote(isCorrect ? correctNote : submittedNote);
     }
 }
 
+document.getElementById("isCorrectRadio").addEventListener("change", () => {
+    settings.feedbackMode = 'correctness';
+    console.log("Feedback mode set to correctness");
+})
 
+document.getElementById("correctNoteRadio").addEventListener("change", () => {
+    settings.feedbackMode = 'notePlayed';
+    console.log("Feedback mode set to correct note");
+})
 function playNote(note){
         //set up web audio 
     const oscillator = audioContext.createOscillator(); 
     const gainNode = audioContext.createGain();
 
-    oscillator.frequency.value = NOTE_FREQUENCIES[currentNote];
+    oscillator.frequency.value = NOTE_FREQUENCIES[note];
     oscillator.type = "sine"; //plain note, no harmonics
 
     oscillator.connect(gainNode); 
-    gainNode.connect(audioContext.destination);
+    gainNode.connect(masterGain);
 
     oscillator.start();
     oscillator.stop(audioContext.currentTime + 1); //play for one second
-    console.log("Played note: " + currentNote); //CONSOLE 
+    console.log("Played note: " + note); //CONSOLE 
 }
 
 function playRandomNote() {
@@ -99,16 +114,12 @@ function checkAnswer(clickedKey){
         feedback.textContent = "Play a note first";
         return; 
     }
-
-
     // find the key element that matches the correct note
     const correctKey = document.querySelector(`.key[data-note="${currentNote}"]`);
-
     //remove leftover colours from previous round
     if (fadeTimer !== null){
         clearTimeout(fadeTimer);
     }
-
     document.querySelectorAll(".key").forEach(key => {
         key.classList.remove("correct", "incorrect", "fading-out");
     });
@@ -121,7 +132,7 @@ function checkAnswer(clickedKey){
         clickedKey.classList.add("incorrect");
         correctKey.classList.add("correct");
     } 
-    playFeedback(userAnswer === currentNote, currentNote);
+    playFeedback(userAnswer === currentNote, currentNote, userAnswer);
 
     fadeTimer = setTimeout(() => {
         document.querySelectorAll(".key").forEach(key => {
