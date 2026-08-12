@@ -63,15 +63,6 @@ function playFeedback(isCorrect, correctNote, submittedNote) {
     }
 }
 
-document.getElementById("isCorrectRadio").addEventListener("change", () => {
-    settings.feedbackMode = 'correctness';
-    console.log("Feedback mode set to correctness");
-})
-
-document.getElementById("correctNoteRadio").addEventListener("change", () => {
-    settings.feedbackMode = 'notePlayed';
-    console.log("Feedback mode set to correct note");
-})
 function playNote(note){
         //set up web audio 
     const oscillator = audioContext.createOscillator(); 
@@ -150,4 +141,20 @@ document.querySelectorAll(".key").forEach(key => {
     key.addEventListener("click", () => {
         checkAnswer(key);
     })
+})
+
+document.getElementById("isCorrectRadio").addEventListener("change", () => {
+    settings.feedbackMode = 'correctness';
+    console.log("Feedback mode set to correctness");
+})
+
+document.getElementById("correctNoteRadio").addEventListener("change", () => {
+    settings.feedbackMode = 'notePlayed';
+    console.log("Feedback mode set to correct note");
+})
+
+document.getElementById("volumeSlider").addEventListener("input", (event) => {
+    const volumeIndex = parseInt(event.target.value);
+    masterGain.gain.value = VOLUME_LEVELS[volumeIndex];
+    console.log("Volume set to level: " + volumeIndex);
 })

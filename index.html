@@ -31,7 +31,8 @@
     <p id="feedback"></p>
 
     <div id ="settings">
-    <p>Settings</p>
+        <h2>Settings</h2>
+        <h3>Feedback Audio</h3>
         <div id="feedbackAudio">
             <input type="radio" id="isCorrectRadio" name="feedbackAudio" value="isCorrect" checked>
             <label for="isCorrectRadio">isCorrect</label><br>
@@ -39,7 +40,13 @@
             <input type="radio" id="correctNoteRadio" name="feedbackAudio" value="correctNote">
             <label for="correctNoteRadio">Note played</label><br>
         </div>
+        <h3>Volume</h3>
+        <div id="volumeSlider">
+            <label for="volume">Volume:</label>
+            <input type="range" id="volume" name="volume" min="0" max="9" step="1" value="5">
+        </div>
     </div>
+
     <script src="script.js"></script>
 
 
